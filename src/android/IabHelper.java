@@ -485,12 +485,12 @@ public class IabHelper {
                 String sku = purchase.getSku();
                 // Only allow purchase verification to be skipped if we are debuggable
                 boolean skipPurchaseVerification = (this.mSkipPurchaseVerification  &&
-                            ((mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0));
+                            ((mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0)) || sku.startsWith("android.test.");
                 // Verify signature
                 if (!skipPurchaseVerification) {
                     if (!Security.verifyPurchase(mSignatureBase64, purchaseData, dataSignature)) {
                         logError("Purchase signature verification FAILED for sku " + sku);
-                        result = new IabResult(IABHELPER_VERIFICATION_FAILED, "Signature verification failed for sku " + sku);
+                        result = new IabResult(IABHELPER_VERIFICATION_FAILED, "Karma: Signature verification failed for sku " + sku);
                         if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, purchase);
                         return true;
                     }
